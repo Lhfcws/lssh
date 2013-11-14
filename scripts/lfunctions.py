@@ -7,7 +7,7 @@ import os
 
 
 def __buildcmd(ls):
-    return 'sshpass -p%s ssh %s@%s'%(ls[4], ls[3], ls[2]) 
+    return 'sshpass -p%s ssh %s@%s'%(ls[4], ls[3], ls[0]) 
 
 def help():
     try:
@@ -25,15 +25,16 @@ def list():
     try:
         fp = open(lconfig.HOSTFILE, 'r')
     
-        print '<ShortName>\t<Hostname>\t<IP>\t\t\t<Username>\t\n'
+        print '<IP>\t\t\t<Hostname>\t\t\t<ShortName>\t\t\t<Username>\t\t\t<Passwd>\n'
 
         cnt = 0
+        sep = '\t\t\t'
         for line in fp.readlines():
             ls = line.strip().split(' ')
             if ls[0].strip()[0] == '#':
                 continue
 
-            print ls[0]+'\t\t'+ls[1]+'\t'+ls[2]+'\t\t'+ls[3]+'\t'
+            print ls[0] + sep + ls[1] + sep + ls[2] + sep + ls[3] + sep + ls[4]
             cnt += 1
     
         print '======================='
@@ -48,14 +49,14 @@ def add(value):
     # user:pwd@192.168.0.1:hostname:shortname
     # Check format
     re_ip = re.compile('((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))')
-    re_name = re.compile('[a-z|A-Z|0-9|_|-|@]{3,16}')
+    re_name = re.compile('[a-z|A-Z|0-9|_|-|@|.]{3,16}')
     
     try:
         ls = value.split(':')
         ls[1:2] = ls[1].split('@')
 
         bo = re_ip.match(ls[2]) != None and \
-            re_name.match(ls[0]) != None and \
+            re_name.match(ls[1]) != None and \
             re_name.match(ls[3]) != None and \
             re_name.match(ls[4]) != None
 
@@ -82,7 +83,7 @@ def add(value):
         os.system('mkdir -p ~/.lssh')
         fp = open(lconfig.HOSTFILE, 'a')
 
-        content = ls[4] + ' ' + ls[3] + ' ' + ls[2] + ' ' + ls[0] + ' ' + ls[1] + '\n'
+        content = ls[2] + ' ' + ls[3] + ' ' + ls[4] + ' ' + ls[0] + ' ' + ls[1] + '\n'
 
         fp.write(content)
         fp.close()
