@@ -9,8 +9,9 @@ import lfunctions
 
 def is_unique(element, lst):
     if element in lst:
-        return len(lst) == 1 
+        return len(lst) == 1
     return True
+
 
 def parse_args(options, args):
     ### Filter wrong commands
@@ -46,16 +47,18 @@ def parse_args(options, args):
 
     return True
 
+
 def main():
     options, args = getopt(sys.argv[1:], 'hla:d:', [])
-    
+
     result = parse_args(options, args)
 
     if result and len(args) == 1:
         lfunctions.connect(args[0])
     elif not result:
-            print '$ Error! Please follow the help information.\n'
-            lfunctions.help()
+        print('$ Error! Please follow the help information.\n')
+        lfunctions.help()
+
 
 ##################
 if __name__ == '__main__':
