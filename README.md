@@ -11,3 +11,7 @@ Recommend to the coders who have to usually ssh to Unix servers. Not Recommend t
 4. `source ~/.bashrc`
 
 *lssh -h* to see the more details.
+
+**[Others]**
+
+There're something that needs to be improved in this project, like storing password in salted base64 encryption, forking a process instead of run commands in python, using `expect` to automatically create the first-time ssh connection according to the give host list. 
